@@ -12,6 +12,14 @@ app.use(express.json()); // lets the API read JSON request bodies
 const client = new MongoClient(process.env.MONGODB_URI);
 let tickets; // the "tickets" collection, set once we connect
 
+// Root: short description so visitors know what this is
+app.get("/", (req, res) => {
+  res.json({
+    name: "Support Ticket Tracker API",
+    endpoints: ["/health", "/tickets/open?priority=urgent", "POST /tickets", "PATCH /tickets/:id/close"],
+  });
+});
+
 // 1. Health check: confirms the API is running and can reach the database
 app.get("/health", async (req, res) => {
   await client.db("admin").command({ ping: 1 });
